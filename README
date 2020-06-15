@@ -1,0 +1,157 @@
+****************
+* HashTable
+* CS 321
+* 4/6/2020
+* Sam Jackson
+**************** 
+
+OVERVIEW:
+
+ HashTable is an array-based implementation of the HashTable ADT with
+ both a linear probing and double hashing option for open addressing.
+ HashTest verifies input and tests the HashTable.
+
+
+INCLUDED FILES:
+
+ DoubleHashing.java - source file
+ HashObject.java - source file
+ HashTable.java - source file
+ HashTest.java - source file
+ LinearProbe.java - source file
+ word-list - linked text file
+ my-results.txt - tables for average output
+ README - this file
+
+
+BUILDING AND RUNNING:
+
+ From the directory containing all source files, compile the test
+ class (and all dependent classes) with the command:
+ $ javac HashTest.java
+
+ Run the compiled HashTest class with the command:
+ $ java HashTest <input type> <load factor> [<debug level>]
+ 
+ Where input type (1-3) determines use of random integers, current time in
+ milliseconds (doubles), or words from the word list respectively.
+ Load factor (0-1 exclusively) determines the space used in the hash
+ table for elements.
+ Debug level (optional, 1 or 0) determines whether two new files, linear-dump
+ and double-dump, are created. These files output the both hashtable's toString
+ methods for debugging purposes.
+ 
+ Console output will report the size of the table (currently hardcoded at
+ 95791), the data source type, and information regarding both linear hashing
+ and double hashing based on the entered load factor.
+ 
+ RESULTS:
+
+ Input source 1: random number
+
+ alpha	     linear    double
+ -----------------------------
+ 0.5         1.510     1.388
+ 0.6	     1.782     1.528
+ 0.7	     2.154     1.714 
+ 0.8	     2.977     2.020
+ 0.9	     5.547     2.546
+ 0.95	    11.533     3.149
+ 0.98	    33.342     3.957
+ 0.99	    47.725     4.623
+
+
+ Input6 source 2: current time
+
+ alpha        linear    double
+ -----------------------------
+ 0.5          1.0       1.0
+ 0.6          1.0       1.0
+ 0.7          1.0       1.0
+ 0.8          1.0       1.0
+ 0.9          1.0       1.0
+ 0.95         1.0       1.0
+ 0.98         1.0       1.0
+ 0.99         1.0       1.0 
+
+
+ Input source 3: word-list
+
+ alpha        linear    double
+ -----------------------------
+ 0.5         1.597     1.390
+ 0.6	     2.149     1.534
+ 0.7	     3.604     1.721
+ 0.8	     6.708     2.016
+ 0.9	    19.815     2.569 
+ 0.95	   110.595     3.186 
+ 0.98	   324.042     4.020
+ 0.99	   471.658     4.696
+
+ Above are average results from running the test class with different
+ load factors and data types. These can also be found in my-results.txt
+
+PROGRAM DESIGN:
+
+ HashTable is an instance of the Hash Table ADT, which defines a system
+ of containing elements and mapping them to a table based on some equations
+ and keys. In this instance, all elements are first contained in HashObjects,
+ which can be compared to one another to decide if a duplicate has been
+ added to the table. This is important as any duplicate simply increases
+ the object's frequency count, and is not added to the table.
+ 
+ Furthermore, each object also keeps track of the amount of probes it has
+ taken to add it to the table. This is important because the average number
+ of probes per element is a way to understand the efficiency of the hashing
+ methods. 
+ 
+ The hash table currently only supports open addressing methods; these
+ methods are double hashing and linear probing. On average, as seen by
+ the provided tables, double hashing uses less average probes per element,
+ and is thus seen as more efficient. A slight drawback is that it is more
+ complicated, but with proper abstraction it shouldn't matter how complex
+ the equation is behind the scenes if it works as expected.
+
+ All tests currently use a set table size of 96791 elements, but this
+ can be changed when creating a new HashTable object. It is recommended
+ that one uses the greater of a twin prime number for the sake of the
+ double hashing method.
+
+ HashTest confirms expected average number of probes for each input
+ type and load factor; it can also output the explicit tables
+ to new files if asked.
+
+
+TESTING:
+
+ HashTest was created as the primary way to test HashTable. It allows
+ a user to decide the type of data to be used, as well as the load factor
+ and whether or not files should be created.
+ 
+ The output from running the test file can be understood as correct by
+ comparing it to the expected output in the project specifications.
+
+ Given more time, unit tests may have ensured full functionality in addition
+ to current testing methods. There are no known bugs.
+
+
+DISCUSSION:
+ 
+ Initially, I was excited about this project as I find hash tables to
+ be really neat. Development went smoothly for the most part, and
+ I was able to fix most bugs in a timely manner. Unfortunately, I
+ did end up having trouble with the double hashing function.
+ 
+ Translating the equation from the project specifications seemed
+ easy. But once I began testing it, I found it was outputting
+ negative numbers which would eventually throw an index out of bounds
+ exception. After reading the spec again, I found how to correct this.
+ However, I was still getting a slightly incorrect table compared
+ to expected results.
+ 
+ Finally I realized that, when double hashing, you add the modulus
+ to the result if it is negative, not simply the capacity. This
+ came down to my understanding of the function, so I took it as a
+ learning experience.
+
+ 
